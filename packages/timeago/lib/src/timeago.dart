@@ -92,6 +92,8 @@ void setLocaleMessages(String locale, LookupMessages lookupMessages) {
 ///
 /// - If [locale] is passed will look for message for that locale, if you want
 ///   to add or override locales use [setLocaleMessages]. Defaults to 'en'
+/// - If [autoFallback] is passed, will try to use the related locale if the
+///   locale is not found but there is a locale of the same language available.
 /// - If [clock] is passed this will be the point of reference for calculating
 ///   the elapsed time. Defaults to DateTime.now()
 /// - If [allowFromNow] is passed, format will use the From prefix, ie. a date
@@ -99,13 +101,32 @@ void setLocaleMessages(String locale, LookupMessages lookupMessages) {
 /// - If [short] is passed, format will use the short format if possible
 String format(DateTime date,
     {String? locale,
+    bool autoFallback = true,
     DateTime? clock,
     bool allowFromNow = false,
     bool short = false}) {
-  final _locale = locale ?? _default;
+  var _locale = locale ?? _default;
   if (_lookupMessagesMap[_locale] == null) {
-    print(
-        "Locale [$_locale] has not been added, using [$_default] as fallback. To add a locale use [setLocaleMessages]");
+    if (autoFallback) {
+      final fallbackLocale = _locale.split('-')[0];
+      if (_lookupMessagesMap[fallbackLocale] != null) {
+        _locale = fallbackLocale;
+      } else {
+        final relatedLocale = _lookupMessagesMap.keys.firstWhere(
+          (key) => key.startsWith(fallbackLocale),
+          orElse: () => "",
+        );
+        if (relatedLocale.isNotEmpty) {
+          _locale = relatedLocale;
+        } else {
+          print(
+              "No similar locale for [$_locale] was found, using English as fallback.");
+        }
+      }
+    } else {
+      print(
+          "Locale [$_locale] has not been added, using English as fallback. To add a locale use [setLocaleMessages]");
+    }
   }
   final _allowFromNow = allowFromNow;
   final messages = _lookupMessagesMap[_locale] ?? EnMessages();
