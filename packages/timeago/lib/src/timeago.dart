@@ -4,56 +4,57 @@ import 'package:timeago/src/messages/messages.dart';
 String _default = 'en';
 
 Map<String, LookupMessages> _lookupMessagesMap = {
-  'am': AmMessages(),
-  'ar': ArMessages(),
-  'az': AzMessages(),
-  'be': BeMessages(),
-  'bs': BsMessages(),
-  'ca': CaMessages(),
-  'cs': CsMessages(),
-  'da': DaMessages(),
-  'de': DeMessages(),
-  'dv': DvMessages(),
-  'en': EnMessages(),
-  'es': EsMessages(),
-  'et': EtMessages(),
-  'fa': FaMessages(),
-  'fi': FiMessages(),
-  'fr': FrMessages(),
-  'gr': GrMessages(),
-  'he': HeMessages(),
-  'hi': HiMessages(),
-  'hr': HrMessages(),
-  'hu': HuMessages(),
-  'id': IdMessages(),
-  'it': ItMessages(),
-  'ja': JaMessages(),
-  'km': KmMessages(),
-  'ko': KoMessages(),
-  'ku': KuMessages(),
-  'lv': LvMessages(),
-  'mn': MnMessages(),
-  'ms': MsMyMessages(),
-  'my': MyMessages(),
-  'nb': NbNoMessages(),
-  'nl': NlMessages(),
-  'nn': NnNoMessages(),
-  'pl': PlMessages(),
-  'pt-br': PtBrMessages(),
-  'ro': RoMessages(),
-  'ru': RuMessages(),
-  'rw': RwMessages(),
-  'sr': SrMessages(),
-  'sv': SvMessages(),
-  'ta': TaMessages(),
-  'th': ThMessages(),
-  'tk': TkMessages(),
-  'tr': TrMessages(),
-  'uk': UkMessages(),
-  'ur': UrMessages(),
-  'vi': ViMessages(),
-  'zh-Hant': ZhHantMessages(),
-  'zh-Hans': ZhHansMessages(),
+  'am-ET': AmMessages(), // Amharic (Ethiopia)
+  'ar-SA': ArMessages(), // Arabic (Saudi Arabia)
+  'az-AZ': AzMessages(), // Azerbaijani (Azerbaijan)
+  'be-BY': BeMessages(), // Belarusian (Belarus)
+  'bs-BA': BsMessages(), // Bosnian (Bosnia and Herzegovina)
+  'ca-ES': CaMessages(), // Catalan (Spain)
+  'cs-CZ': CsMessages(), // Czech (Czech Republic)
+  'da-DK': DaMessages(), // Danish (Denmark)
+  'de-DE': DeMessages(), // German (Germany)
+  'dv-MV': DvMessages(), // Divehi (Maldives)
+  'en': EnMessages(), // English
+  'en-US': EnMessages(), // English (United States)
+  'es-ES': EsMessages(), // Spanish (Spain)
+  'et-EE': EtMessages(), // Estonian (Estonia)
+  'fa-IR': FaMessages(), // Persian (Iran)
+  'fi-FI': FiMessages(), // Finnish (Finland)
+  'fr-FR': FrMessages(), // French (France)
+  'el-GR': GrMessages(), // Greek (Greece)
+  'he-IL': HeMessages(), // Hebrew (Israel)
+  'hi-IN': HiMessages(), // Hindi (India)
+  'hr-HR': HrMessages(), // Croatian (Croatia)
+  'hu-HU': HuMessages(), // Hungarian (Hungary)
+  'id-ID': IdMessages(), // Indonesian (Indonesia)
+  'it-IT': ItMessages(), // Italian (Italy)
+  'ja-JP': JaMessages(), // Japanese (Japan)
+  'km-KH': KmMessages(), // Khmer (Cambodia)
+  'ko-KR': KoMessages(), // Korean (South Korea)
+  'ku-TR': KuMessages(), // Kurdish (Turkey)
+  'lv-LV': LvMessages(), // Latvian (Latvia)
+  'mn-MN': MnMessages(), // Mongolian (Mongolia)
+  'ms-MY': MsMyMessages(), // Malay (Malaysia)
+  'my-MM': MyMessages(), // Burmese (Myanmar)
+  'nb-NO': NbNoMessages(), // Norwegian Bokmål (Norway)
+  'nl-NL': NlMessages(), // Dutch (Netherlands)
+  'nn-NO': NnNoMessages(), // Norwegian Nynorsk (Norway)
+  'pl-PL': PlMessages(), // Polish (Poland)
+  'pt-BR': PtBrMessages(), // Portuguese (Brazil)
+  'ro-RO': RoMessages(), // Romanian (Romania)
+  'ru-RU': RuMessages(), // Russian (Russia)
+  'rw-RW': RwMessages(), // Kinyarwanda (Rwanda)
+  'sr-RS': SrMessages(), // Serbian (Serbia)
+  'sv-SE': SvMessages(), // Swedish (Sweden)
+  'ta-IN': TaMessages(), // Tamil (India)
+  'th-TH': ThMessages(), // Thai (Thailand)
+  'tk-TM': TkMessages(), // Turkmen (Turkmenistan)
+  'tr-TR': TrMessages(), // Turkish (Turkey)
+  'uk-UA': UkMessages(), // Ukrainian (Ukraine)
+  'ur-PK': UrMessages(), // Urdu (Pakistan)
+  'vi-VN': ViMessages(), // Vietnamese (Vietnam)
+  'zh-TW': ZhHantMessages(), // Chinese (Traditional, Taiwan)
+  'zh-CN': ZhHansMessages(), // Chinese (Simplified, China)
 };
 
 /// Sets the default [locale]. By default it is `en`.
@@ -68,6 +69,9 @@ void setDefaultLocale(String locale) {
       '[locale] must be a registered locale');
   _default = locale;
 }
+
+/// Returns the supported locales
+List<String> getSupportedLocales() => _lookupMessagesMap.keys.toList();
 
 /// Sets a [locale] with the provided [lookupMessages] to be available when
 /// using the [format] function.
@@ -92,6 +96,7 @@ void setLocaleMessages(String locale, LookupMessages lookupMessages) {
 ///   the elapsed time. Defaults to DateTime.now()
 /// - If [allowFromNow] is passed, format will use the From prefix, ie. a date
 ///   5 minutes from now in 'en' locale will display as "5 minutes from now"
+/// - If [short] is passed, format will use the short format if possible
 String format(DateTime date,
     {String? locale,
     DateTime? clock,
