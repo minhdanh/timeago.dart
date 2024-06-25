@@ -1,4 +1,3 @@
-export 'package:timeago/src/lookup_messages.dart';
 export 'package:timeago/src/messages/am-ET.dart';
 export 'package:timeago/src/messages/ar-AR.dart';
 export 'package:timeago/src/messages/az-AZ.dart';
@@ -47,5 +46,5 @@ export 'package:timeago/src/messages/tr-TR.dart';
 export 'package:timeago/src/messages/uk-UA.dart';
 export 'package:timeago/src/messages/ur-PK.dart';
 export 'package:timeago/src/messages/vi-VN.dart';
+export 'package:timeago/src/messages/zh-Hans.dart';
 export 'package:timeago/src/messages/zh-Hant.dart';
-export 'package:timeago/src/timeago.dart';

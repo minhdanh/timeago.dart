@@ -26,7 +26,7 @@ void main() {
       final clock = now.add(Duration(seconds: 1));
 
       var result = timeago.format(now, locale: 'ko', clock: clock);
-      expect(result, equals('a moment ago'));
+      expect(result, equals('방금 전'));
     });
 
     test('should allow to override a locale', () async {
@@ -49,11 +49,9 @@ void main() {
     test('should allow to add a new locale', () async {
       var clock = now.add(Duration(seconds: 170));
 
-      // Add 'en_short' locale messages
-      timeago.setLocaleMessages('en_short', timeago.EnShortMessages());
-
-      // use 'en_short'
-      var result = timeago.format(now, locale: 'en_short', clock: clock);
+      // use short format
+      var result =
+          timeago.format(now, locale: 'en_US', clock: clock, short: true);
       expect(result, equals('3m'));
     });
 
@@ -214,7 +212,7 @@ void main() {
 
 class CustomEnglishMessages extends timeago.EnMessages {
   @override
-  String lessThanOneMinute(int seconds) {
+  String lessThanOneMinute(int seconds, {bool short = false}) {
     return seconds > 1 ? '$seconds seconds' : '1 second';
   }
 }

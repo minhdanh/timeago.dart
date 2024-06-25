@@ -1,14 +1,59 @@
-import 'package:timeago/src/messages/en_messages.dart';
-import 'package:timeago/src/messages/es_messages.dart';
-import 'package:timeago/src/messages/lookupmessages.dart';
+import 'package:timeago/src/lookup_messages.dart';
+import 'package:timeago/src/messages/messages.dart';
 
 String _default = 'en';
 
 Map<String, LookupMessages> _lookupMessagesMap = {
+  'am': AmMessages(),
+  'ar': ArMessages(),
+  'az': AzMessages(),
+  'be': BeMessages(),
+  'bs': BsMessages(),
+  'ca': CaMessages(),
+  'cs': CsMessages(),
+  'da': DaMessages(),
+  'de': DeMessages(),
+  'dv': DvMessages(),
   'en': EnMessages(),
-  'en_short': EnShortMessages(),
   'es': EsMessages(),
-  'es_short': EsShortMessages(),
+  'et': EtMessages(),
+  'fa': FaMessages(),
+  'fi': FiMessages(),
+  'fr': FrMessages(),
+  'gr': GrMessages(),
+  'he': HeMessages(),
+  'hi': HiMessages(),
+  'hr': HrMessages(),
+  'hu': HuMessages(),
+  'id': IdMessages(),
+  'it': ItMessages(),
+  'ja': JaMessages(),
+  'km': KmMessages(),
+  'ko': KoMessages(),
+  'ku': KuMessages(),
+  'lv': LvMessages(),
+  'mn': MnMessages(),
+  'ms': MsMyMessages(),
+  'my': MyMessages(),
+  'nb': NbNoMessages(),
+  'nl': NlMessages(),
+  'nn': NnNoMessages(),
+  'pl': PlMessages(),
+  'pt-br': PtBrMessages(),
+  'ro': RoMessages(),
+  'ru': RuMessages(),
+  'rw': RwMessages(),
+  'sr': SrMessages(),
+  'sv': SvMessages(),
+  'ta': TaMessages(),
+  'th': ThMessages(),
+  'tk': TkMessages(),
+  'tr': TrMessages(),
+  'uk': UkMessages(),
+  'ur': UrMessages(),
+  'vi': ViMessages(),
+  'zh-Hant': ZhHantMessages(),
+  'zh-Hans': ZhHansMessages(),
 };
 
 /// Sets the default [locale]. By default it is `en`.
@@ -48,10 +93,14 @@ void setLocaleMessages(String locale, LookupMessages lookupMessages) {
 /// - If [allowFromNow] is passed, format will use the From prefix, ie. a date
 ///   5 minutes from now in 'en' locale will display as "5 minutes from now"
 String format(DateTime date,
-    {String? locale, DateTime? clock, bool allowFromNow = false}) {
+    {String? locale,
+    DateTime? clock,
+    bool allowFromNow = false,
+    bool short = false}) {
   final _locale = locale ?? _default;
   if (_lookupMessagesMap[_locale] == null) {
-    print("Locale [$_locale] has not been added, using [$_default] as fallback. To add a locale use [setLocaleMessages]");
+    print(
+        "Locale [$_locale] has not been added, using [$_default] as fallback. To add a locale use [setLocaleMessages]");
   }
   final _allowFromNow = allowFromNow;
   final messages = _lookupMessagesMap[_locale] ?? EnMessages();
@@ -62,11 +111,11 @@ String format(DateTime date,
 
   if (_allowFromNow && elapsed < 0) {
     elapsed = date.isBefore(_clock) ? elapsed : elapsed.abs();
-    prefix = messages.prefixFromNow();
-    suffix = messages.suffixFromNow();
+    prefix = messages.prefixFromNow(short: short);
+    suffix = messages.suffixFromNow(short: short);
   } else {
-    prefix = messages.prefixAgo();
-    suffix = messages.suffixAgo();
+    prefix = messages.prefixAgo(short: short);
+    suffix = messages.suffixAgo(short: short);
   }
 
   final num seconds = elapsed / 1000;
@@ -78,27 +127,27 @@ String format(DateTime date,
 
   String result;
   if (seconds < 45) {
-    result = messages.lessThanOneMinute(seconds.round());
+    result = messages.lessThanOneMinute(seconds.round(), short: short);
   } else if (seconds < 90) {
-    result = messages.aboutAMinute(minutes.round());
+    result = messages.aboutAMinute(minutes.round(), short: short);
   } else if (minutes < 45) {
-    result = messages.minutes(minutes.round());
+    result = messages.minutes(minutes.round(), short: short);
   } else if (minutes < 90) {
-    result = messages.aboutAnHour(minutes.round());
+    result = messages.aboutAnHour(minutes.round(), short: short);
   } else if (hours < 24) {
-    result = messages.hours(hours.round());
+    result = messages.hours(hours.round(), short: short);
   } else if (hours < 48) {
-    result = messages.aDay(hours.round());
+    result = messages.aDay(hours.round(), short: short);
   } else if (days < 30) {
-    result = messages.days(days.round());
+    result = messages.days(days.round(), short: short);
   } else if (days < 60) {
-    result = messages.aboutAMonth(days.round());
+    result = messages.aboutAMonth(days.round(), short: short);
   } else if (days < 365) {
-    result = messages.months(months.round());
+    result = messages.months(months.round(), short: short);
   } else if (years < 2) {
-    result = messages.aboutAYear(months.round());
+    result = messages.aboutAYear(months.round(), short: short);
   } else {
-    result = messages.years(years.round());
+    result = messages.years(years.round(), short: short);
   }
 
   return [prefix, result, suffix]
